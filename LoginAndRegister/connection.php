@@ -18,4 +18,9 @@ class crud {
         return $data;
         }
 
+        public static function Deleted(){
+            $con=crud::connection()->prepare("UPDATE userstable SET is_deleted='1' WHERE id=:id");
+            return $con;
+        }
+
     }

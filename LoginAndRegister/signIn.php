@@ -12,25 +12,25 @@
 <?php
 require('./connection.php');
 
-if(isset($_POST["signUP_button"])){
-    $_SESSION['Validate'] = false;
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+// if(isset($_POST["signUP_button"])){
+//     $_SESSION['Validate'] = false;
+//     $email = $_POST['email'];
+//     $password = $_POST['password'];
 
-    $p=crud::connection()->prepare('SELECT * FROM userstable WHERE email=:ea and password=:ps');
+//     $p=crud::connection()->prepare('SELECT * FROM userstable WHERE email=:ea and password=:ps');
 
-    $p->bindValue(':ea',$email);
-    $p->bindValue(':ps',$password);
-    $p->execute();
-    $d = $p->fetchAll(PDO::FETCH_ASSOC);
+//     $p->bindValue(':ea',$email);
+//     $p->bindValue(':ps',$password);
+//     $p->execute();
+//     $d = $p->fetchAll(PDO::FETCH_ASSOC);
     
-    if($p->rowCount()>0){
-        $_SESSION['email'] = $email;
-        $_SESSION['password'] = $password;
-        $_SESSION['Validate'] = true;
-        header('location:home1.php');
-    }
-}
+//     if($p->rowCount()>0){
+//         $_SESSION['email'] = $email;
+//         $_SESSION['password'] = $password;
+//         $_SESSION['Validate'] = true;
+//         header('location:home1.php');
+//     }
+// }
 
 ?>
 <div class="form">
@@ -73,15 +73,16 @@ if(isset($_POST["signUP_button"])){
 <body>
     <?php 
     session_start();
-    require('./connection.php');
-
+    
+   
     if(isset($_POST['submit'])){
+        $_SESSION['validate']=false;
 
         $email=$_POST['email'];
         $password=$_POST['password'];
         // $nowTimeStamp = date("Y-m-d H:i:s");
         $error="";
-        $db = crud::connect()->prepare("SELECT * FROM users WHERE email=:email and password = :password ");
+        $db = crud::connection()->prepare("SELECT * FROM userstable WHERE email=:email and password = :password ");
         $db->bindValue(':email' , $email);
         $db->bindValue(':password' , $password);
         $db->execute();
@@ -96,9 +97,10 @@ if(isset($_POST["signUP_button"])){
                 $_SESSION['validate']=true;
                 header("location:./users.php");
 
+                
                  //add date last log in use now() function
                 $sql="UPDATE  users SET  last_login =now() WHERE id=". $_SESSION['id'];
-                $db = crud::connect()->prepare( $sql);
+                $db = crud::connection()->prepare( $sql);
                 $db->execute();
             }
          

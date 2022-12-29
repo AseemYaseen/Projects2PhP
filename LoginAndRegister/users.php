@@ -1,69 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="table1.css">
-    <title>Document</title>
-</head>
-<body>
-    
-
-
-    <?php
-    require('./connection.php');
-    $p = crud::Users();
-    $i = 1;
-    ?>
-    <table>
-<tr>
-    <td class="TableHead">Number</td>
-    <td class="TableHead">First Name</td>
-    <td class="TableHead">Laste Name</td>
-    <td class="TableHead">Email</td>
-    <td class="TableHead">Phone Number</td>
-    <td class="TableHead">Birthday</td>
-    <td class="TableHead">Password</td>
-
-    <?php foreach ($p as $row ): ?>
-<?php 
-if ($row['is_deleted']==1){
-  continue;
-}
-?>
-<?php  endforeach;?>
-
-    <?php foreach($p as $row): ?>
-      <tr>
-            <td><?php echo $i; ?></td>
-            <td><?php echo $row['firstName']; ?></td>
-            <td><?php echo $row['lastName']; ?></td>
-            <td><?php echo $row['email']; ?></td>
-            <td><?php echo $row['phoneNumber']; ?></td>
-            <td><?php echo $row['date']; ?></td>
-            <td><?php echo $row['password']; ?></td>
-
-         <td>
-            <a href="./edit.php?id=<?php echo $row['id'];?>" class="Update">edit</a>
-            <a href="./delete.php?id=<?php echo $row['id'];?>"onclick="return confirm('are you shure?')" class="Delete">delete</a>
-         </td>
-         </tr>
-                <?php ++$i;?>
-                <?php  endforeach;?>
-
-        </tr>
-        </tr>
-
-        </table>
-
-
-
-
-
-</body>
-</html> -->
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -99,14 +33,15 @@ if ($row['is_deleted']==1){
         }
     </style>
 <body>
+
     <?php session_start(); ?> 
-    <?php require('./connection.php'); ?>
+    <?php require('./connection.php');  ?>
 
 <?php
 // ------------------- delet user 
 if(isset($_GET['id'])){
     $id=$_GET['id'];
-    $db = crud::delete();
+    $db = crud::Deleted();
     if($db->execute([':id' => $id])){
        
     }
@@ -116,15 +51,15 @@ if(isset($_GET['id'])){
     <?php echo "<h1>"."welcome " . $_SESSION['name'] ."</h1>" . "<br>" ,
     "<h3>"."your email is ".$_SESSION['email']."</h3>";?>
 
-    <?php $db = crud::selectData(); ?>
+    <?php $db = crud::Users(); ?>
 
     <?php if( $_SESSION['role']== 1) :?>
     <table >
     <th>#</th>
     <th> name</th>
-    <th> phone number</th>
-    <th> email</th>
-    <th>password</th>
+    <th> lastName</th>
+    <th> Email</th>
+    <th>phoneNumber</th>
     <th>date created</th>
     <th>date last login</th>
     <th>edit</th>
@@ -135,14 +70,14 @@ if(isset($_GET['id'])){
 <?php if($value['is_deleted']==1){continue;};?> 
     <tr>
         <td><?php echo $i++;?></td>
-        <td><?php echo $value['full_name']?></td>
-        <td><?php echo $value['phone_number']?></td>
+        <td><?php echo $value['firstName']?></td>
+        <td><?php echo $value['lastName']?></td>
         <td><?php echo $value['email']?></td>
+        <td><?php echo $value['phoneNumber']?></td>
+        <td><?php echo $value['date']?></td>
         <td><?php echo $value['password']?></td>
-        <td><?php echo $value['date created']?></td>
-        <td><?php echo $value['last_login']?></td>
         <td><a href="./edit.php?id=<?php echo $value['id']; ?>"><img src="./edit.png"></a></td>
-        <td><a href="./users.php?id=<?php echo $value['id']; ?>" onclick="return confirm ('are you shure')" ><img src="./delete.jpg"></a></td>
+        <td><a href="./users.php?id=<?php echo $value['id']; ?>" onclick="return confirm ('are you sure')" ><img src="./delete.jpg"></a></td>
 
         
       
